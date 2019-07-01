@@ -1,9 +1,7 @@
 defmodule Mix.Tasks.Elvis do
   use Mix.Task
 
-  @shortdoc """
-  Run Elvis linter on Erlang files built with Mix.
-  """
+  @shortdoc "Run Elvis linter on Erlang files built with Mix."
 
   @recursive true
 
@@ -20,6 +18,8 @@ defmodule Mix.Tasks.Elvis do
   ]
 
   def run(_args) do
+    Application.load(Mix.Project.get!())
+
     case :elvis_core.rock(config()) do
       :ok ->
         :ok

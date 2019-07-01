@@ -1,11 +1,11 @@
-# MixElvis
+# Mix Elvis
 
-**TODO: Add description**
+Run [Elvis][elvis] linter for projects that are using Mix.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `mix_elvis` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `mix_elvis` to your list of dependencies
+in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,7 +15,17 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/mix_elvis](https://hexdocs.pm/mix_elvis).
+## Usage
 
+Install and run `mix elvis`. You can configure Elvis via:
+
+- `elvis.config` file (Erlang `file:consult/1` format)
+- `:elvis` entry in project configuration (remember to use charlists instead of
+  binaries)
+- application configuration (remember to use charlists as well)
+
+## License
+
+See [LICENSE](LICENSE).
+
+[elvis]: https://github.com/inaka/elvis_core
