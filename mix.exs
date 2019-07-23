@@ -11,6 +11,12 @@ defmodule MixElvis.MixProject do
     ]
   end
 
+  def application do
+    [
+      extra_applications: [:logger]
+    ]
+  end
+
   defp deps do
     [
       {:elvis, "~> 0.4.0", hex: :elvis_core},

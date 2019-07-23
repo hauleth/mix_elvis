@@ -46,6 +46,14 @@ defmodule Mix.Tasks.ElvisTest do
     end)
   end
 
+  test "macros names are ignored" do
+    in_project(:macros, fn ->
+      output = capture_io(fn -> Mix.Task.run(:elvis) end)
+
+      assert "" == output
+    end)
+  end
+
   defp run_elvis(args \\ []) do
     Mix.Task.rerun(:elvis, args)
 
