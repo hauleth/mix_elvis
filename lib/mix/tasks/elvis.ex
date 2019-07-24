@@ -5,8 +5,6 @@ defmodule Mix.Tasks.Elvis do
 
   @recursive true
 
-  @default_config_path "./elvis.config"
-
   @default_config [
     %{
       dirs: ['src'],
@@ -17,8 +15,14 @@ defmodule Mix.Tasks.Elvis do
     %{dirs: ['.'], filter: 'elvis.config', ruleset: :elvis_config}
   ]
 
-  def run(_args) do
-    Application.load(Mix.Project.get!())
+  @options [
+    format: :string
+  ]
+
+  def run(argv) do
+    {options, _argv, _errors} = OptionParser.parse(argv, strict: @options)
+
+    Application.put_env(:elvis, :output_format, format(options[:format]))
 
     case :elvis_core.rock(config()) do
       :ok ->
@@ -29,23 +33,26 @@ defmodule Mix.Tasks.Elvis do
     end
   end
 
+  defp format(nil), do: if(IO.ANSI.enabled?(), do: :colors, else: :plain)
+  defp format("color"), do: :colors
+  defp format("colors"), do: :colors
+  defp format("plain"), do: :plain
+  defp format(format) when format in ~w[parsable parseable flycheck], do: :parsable
+  defp format(other), do: Mix.raise("Unknown format '#{other}'")
+
   defp config do
-    with {:error, :enoent} <- elvis_file(),
-         :error <- Keyword.fetch(Mix.Project.config(), :elvis),
-         :error <- Application.fetch_env(:elvis, :config) do
+    with :error <- Keyword.fetch(Mix.Project.config(), :elvis),
+         [] <- :elvis_config.default() do
       @default_config
     else
+      config when is_list(config) ->
+        config
+
       {:ok, config} ->
         config
 
       {:error, reason} ->
         Mix.raise("Elvis failed with reason #{inspect(reason)}")
-    end
-  end
-
-  defp elvis_file do
-    with {:ok, [config]} <- :file.consult(@default_config_path) do
-      {:ok, :elvis_config.load(config)}
     end
   end
 end
