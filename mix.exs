@@ -19,7 +19,7 @@ defmodule MixElvis.MixProject do
 
   defp deps do
     [
-      {:elvis, "~> 0.4.0", hex: :elvis_core},
+      {:elvis, "~> 0.5.0", hex: :elvis_core},
       {:ex_doc, ">= 0.0.0", only: [:dev], runtime: false}
     ]
   end
