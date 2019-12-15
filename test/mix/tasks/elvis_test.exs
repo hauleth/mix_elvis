@@ -9,6 +9,14 @@ defmodule Mix.Tasks.ElvisTest do
     end)
   end
 
+  defp run_elvis(args \\ []) do
+    Mix.Task.rerun(:elvis, ["--format=plain" | args])
+
+    :ok
+  rescue
+    Mix.Error -> :error
+  end
+
   for type <- ~w[mix_config elvis_config]a do
     test "#{type}" do
       in_project(unquote(type), fn ->
@@ -40,17 +48,17 @@ defmodule Mix.Tasks.ElvisTest do
 
   test "default" do
     in_project(:default, fn ->
-      output = capture_io(fn -> Mix.Task.run(:elvis) end)
+      output = capture_io(fn -> run_elvis() end)
 
       assert output == ""
     end)
   end
 
-  defp run_elvis(args \\ []) do
-    Mix.Task.rerun(:elvis, args)
+  test "macros names are ignored" do
+    in_project(:macros, fn ->
+      output = capture_io(fn -> run_elvis() end)
 
-    :ok
-  rescue
-    Mix.Error -> :error
+      assert "" == output
+    end)
   end
 end
