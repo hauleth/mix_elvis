@@ -4,7 +4,7 @@ defmodule MixElvis.MixProject do
   def project do
     [
       app: :mix_elvis,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.6",
       deps: deps(),
       package: package()
